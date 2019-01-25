@@ -1,0 +1,34 @@
+{
+  "name": "apollo-datasource-soap",
+  "version": "1.0.0",
+  "description": "A simple implementaion of apollo datasource for soap requests",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RishikeshDarandale/apollo-datasource-soap.git"
+  },
+  "keywords": [
+    "graphql",
+    "apollo",
+    "datasource",
+    "soap"
+  ],
+  "author": "Rishikesh Darandale",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RishikeshDarandale/apollo-datasource-soap/issues"
+  },
+  "homepage": "https://github.com/RishikeshDarandale/apollo-datasource-soap#readme",
+  "dependencies": {
+    "apollo-datasource": "^0.2.1",
+    "apollo-server-errors": "^2.2.0",
+    "graphql": "^14.1.1",
+    "soap": "^0.25.0"
+  },
+  "devDependencies": {
+    "ava": "^1.1.0"
+  }
+}
