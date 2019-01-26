@@ -24,6 +24,14 @@ jobs:
       - persist_to_workspace:
           root: ~/repo
           paths: .
+  codacy-report:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: publish code coverage to codacy
+          command: npm run coverage
   deploy:
     <<: *defaults
     steps:
@@ -44,6 +52,13 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+      - codacy-report:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
       - deploy:
           requires:
             - test
