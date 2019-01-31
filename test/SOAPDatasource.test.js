@@ -15,7 +15,7 @@ test.before((t) => {
   createClientAsyncStub = sinon.stub();
 
   // import the module to SOAPDataSource, using a fake dependency
-  let SOAPDataSource = proxyquire('../src/SOAPDataSource.js', {
+  const SOAPDataSource = proxyquire('../src/SOAPDataSource.js', {
     soap: {
       createClientAsync: createClientAsyncStub,
     },
@@ -39,7 +39,9 @@ test.before((t) => {
  * Happy path test case
  */
 test('When correct method with params is passed, then should get valid response', async (t) => {
-  let response = await datasource.invoke('fakeMethod', {name: 'James Bond'});
+  const response = await datasource.invoke('fakeMethod', {
+    name: 'James Bond',
+  });
   t.deepEqual(response, {message: 'Hello James Bond from fake Service'});
 });
 
@@ -48,11 +50,11 @@ test('When correct method with params is passed, then should get valid response'
  */
 test('When correct method with params is passed and service failed, then should throw apollo error', async (t) => {
   await t.throwsAsync(
-    datasource.invoke('fakeMethod2', {name: 'James Bond'}),
-    {
-      instanceOf: ApolloError,
-      message: 'Did not received the response from the endpoint',
-    }
+      datasource.invoke('fakeMethod2', {name: 'James Bond'}),
+      {
+        instanceOf: ApolloError,
+        message: 'Did not received the response from the endpoint',
+      }
   );
 });
 
@@ -61,7 +63,23 @@ test('When correct method with params is passed and service failed, then should 
  */
 test('When incorrect method name is passed, then should throw apollo error', async (t) => {
   await t.throwsAsync(
-    datasource.invoke('fakeMethod1', {name: 'James Bond'}),
-    {instanceOf: ApolloError, message: 'Error happened when calling a method'}
+      datasource.invoke('fakeMethod1', {name: 'James Bond'}),
+      {instanceOf: ApolloError, message: 'Error happened when calling a method'}
+  );
+});
+
+/**
+ * Negative test case
+ */
+test('When wsdl url is not provided, then should throw apollo error', async (t) => {
+  const SOAPDataSource = require('../src/SOAPDataSource.js');
+  await t.throws(
+      () => {
+        new SOAPDataSource();
+      },
+      {
+        instanceOf: ApolloError,
+        message: 'Cannot make request to SOAP endpoint, missing soap wsdl url.',
+      }
   );
 });

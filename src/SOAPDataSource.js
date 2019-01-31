@@ -12,17 +12,17 @@ class SOAPDataSource extends DataSource {
   /**
    * constructor
    *
-   * @param {String} url a wsdl url of a soap service
+   * @param {String} wsdl a wsdl url of a soap service
    *
    */
-  constructor(url) {
+  constructor(wsdl) {
     super();
-    if (!url) {
+    if (!wsdl) {
       throw new ApolloError(
-        'Cannot make request to SOAP endpoint, missing soap wsdl url.'
+          'Cannot make request to SOAP endpoint, missing soap wsdl url.'
       );
     }
-    this.url = url;
+    this.wsdl = wsdl;
     this.options = {
       wsdl_headers: {},
       wsdl_options: {},
@@ -34,7 +34,7 @@ class SOAPDataSource extends DataSource {
    *
    * @param {Object} options an object options of [soap](https://www.npmjs.com/package/soap#options) npm module
    */
-  willSendRequest(options) {}
+  async willSendRequest(options) {}
 
   /**
    * Implement the initialize method to get access to context
@@ -55,10 +55,16 @@ class SOAPDataSource extends DataSource {
     try {
       if (!this.client) {
         await this.willSendRequest(this.options);
-        this.client = await soap.createClientAsync(this.url, this.options);
+        this.client = await soap.createClientAsync(this.wsdl, this.options);
+        // lets use wsdl_headers for each soap method invocation.
+        if (this.options.wsdl_headers) {
+          Object.keys(this.options.wsdl_headers).forEach((key) =>
+            this.client.addHttpHeader(key, this.options.wsdl_headers[key])
+          );
+        }
       }
     } catch (error) {
-      throw new ApolloError('Couldnot create the soap client.', this.url);
+      throw new ApolloError('Couldnot create the soap client.', this.wsdl);
     }
     return this.client;
   }
@@ -83,8 +89,8 @@ class SOAPDataSource extends DataSource {
     }
     if (!response[0]) {
       throw new ApolloError(
-        'Did not received the response from the endpoint',
-        response
+          'Did not received the response from the endpoint',
+          response
       );
     }
     return response[0];

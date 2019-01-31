@@ -38,6 +38,9 @@ class TestSoapDataSource extends SOAPDataSource {
   }
 
   async willSendRequest(options) {
+    // override the soap endpoint for all requests
+    options.endpoint = 'http://www.thomas-bayer.com/axis2/services/BLZService';
+    // these will be used for all soap calls
     options.wsdl_headers = {
       Authorization: token,
     }
