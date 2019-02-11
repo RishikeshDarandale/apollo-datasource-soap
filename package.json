@@ -28,7 +28,7 @@
     "apollo-datasource": "^0.3.0",
     "apollo-server-errors": "^2.2.0",
     "graphql": "^14.1.1",
-    "soap": "^0.25.0"
+    "soap": "^0.26.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.3.2",
