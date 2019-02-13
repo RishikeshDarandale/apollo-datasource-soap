@@ -62,6 +62,10 @@ class SOAPDataSource extends DataSource {
             this.client.addHttpHeader(key, this.options.wsdl_headers[key])
           );
         }
+        // soap header should be a object with strict xml-string
+        if (this.options.soapHeader) {
+          this.client.addSoapHeader(this.options.soapHeader);
+        }
       }
     } catch (error) {
       throw new ApolloError('Couldnot create the soap client.', this.wsdl);
