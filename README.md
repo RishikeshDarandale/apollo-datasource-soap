@@ -52,9 +52,37 @@ class TestSoapDataSource extends SOAPDataSource {
 }
 ```
 
-# TODO
+# SOAP Cache utility
 
-Implement the caching mechanism using existing apollo caching mechanism.
+SOAP is sent as HTTP POST and its a non-idempotent. Thus it can not be cached at HTTP level.
+
+[This][4] is draft verison of document for response caching for SOAP, but did not found any implementaion of it.
+
+Thus it make sense to client decide to cache it or not and for how much duration.
+
+Specify the ttl to cache the SOAP response.
+
+```
+class TestSoapDataSource extends SOAPDataSource {
+  constructor() {
+    super('http://www.thomas-bayer.com/axis2/services/BLZService?wsdl');
+  }
+
+  async willSendRequest(options) {
+    // override the soap endpoint for all requests
+    options.endpoint = 'http://www.thomas-bayer.com/axis2/services/BLZService';
+    // these will be used for all soap calls
+    options.wsdl_headers = {
+      Authorization: token,
+    }
+  }
+
+  async getBank() {
+    // cache the response for 1 hour
+    return await this.invoke('getBank', {blz: 37050198}, {ttl: 3600});
+  }
+}
+```
 
 # Issue or need a new feature?
 
@@ -80,3 +108,4 @@ For impatient here are quick steps:
 [1]: https://www.apollographql.com/docs/apollo-server/features/data-sources.html
 [2]: https://github.com/RishikeshDarandale/apollo-datasource-soap/issues/new
 [3]: ./CONTRIBUTING.md
+[4]: https://lists.w3.org/Archives/Public/www-ws/2001Aug/att-0000/ResponseCache.html

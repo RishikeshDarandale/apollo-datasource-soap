@@ -10,7 +10,7 @@ let createClientAsyncStub; // fake soap client object
 /**
  * Execute before any test execution
  */
-test.before((t) => {
+test.beforeEach((t) => {
   // This runs before all tests
   createClientAsyncStub = sinon.stub();
 
@@ -20,7 +20,6 @@ test.before((t) => {
       createClientAsync: createClientAsyncStub,
     },
   });
-  datasource = new SOAPDataSource('https://fake.com/fake-service?wsdl');
   createClientAsyncStub.returns({
     fakeMethodAsync: async function(params) {
       return [
@@ -29,10 +28,23 @@ test.before((t) => {
         },
       ];
     },
+    fakeCacheMethodAsync: async function(params) {
+      return [
+        {
+          message:
+            'Hello ' +
+            params.name +
+            ' from fake Service ' +
+            new Date().getTime(),
+        },
+      ];
+    },
     fakeMethod2Async: async function(params) {
       return [];
     },
   });
+  datasource = new SOAPDataSource('https://fake.com/fake-service?wsdl');
+  datasource.initialize({});
 });
 
 /**
@@ -43,6 +55,47 @@ test('When correct method with params is passed, then should get valid response'
     name: 'James Bond',
   });
   t.deepEqual(response, {message: 'Hello James Bond from fake Service'});
+});
+
+test('When correct method with params is passed with ttl to cache, then should get valid response', async (t) => {
+  const response = await datasource.invoke(
+      'fakeMethod',
+      {
+        name: 'James Bond',
+      },
+      {ttl: 60}
+  );
+  t.deepEqual(response, {message: 'Hello James Bond from fake Service'});
+});
+
+test('When correct cached method is invoked, then should get cached response', async (t) => {
+  const firstResponse = await datasource.invoke(
+      'fakeCacheMethod',
+      {
+        name: 'James Bond',
+      },
+      {ttl: 5}
+  );
+  // await
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const secondResponse = await datasource.invoke(
+      'fakeCacheMethod',
+      {
+        name: 'James Bond',
+      },
+      {ttl: 5}
+  );
+  t.deepEqual(firstResponse, secondResponse);
+  // await
+  await new Promise((resolve) => setTimeout(resolve, 6000));
+  const thirdResponse = await datasource.invoke(
+      'fakeCacheMethod',
+      {
+        name: 'James Bond',
+      },
+      {ttl: 5}
+  );
+  t.notDeepEqual(firstResponse, thirdResponse);
 });
 
 /**

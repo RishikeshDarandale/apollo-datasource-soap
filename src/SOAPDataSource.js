@@ -1,8 +1,12 @@
 'use strict';
 
+const crypto = require('crypto');
+
 const {DataSource} = require('apollo-datasource');
 const {ApolloError} = require('apollo-server-errors');
 const soap = require('soap');
+
+const SOAPCache = require('./SOAPCache.js');
 
 /**
  * A Soap datasource class
@@ -45,7 +49,7 @@ class SOAPDataSource extends DataSource {
    */
   initialize(config) {
     this.context = config.context;
-    this.cache = config.cache;
+    this.cache = new SOAPCache(config.cache);
   }
 
   /**
@@ -78,27 +82,64 @@ class SOAPDataSource extends DataSource {
    *
    * @param {String} methodName the methodname to Invoke
    * @param {Object} params the params for soap method
+   * @param {Object} cacheOptions options for caching
    *
    */
-  async invoke(methodName, params) {
+  async invoke(methodName, params, cacheOptions) {
     let response;
     try {
       // create the client
       await this.createClient();
-      response = await this.client[methodName + 'Async'](params);
-      console.log('The response: ' + JSON.stringify(response[0]));
+      if (cacheOptions && cacheOptions.ttl > 0) {
+        console.log('In cache', JSON.stringify(cacheOptions));
+        // caching enabled
+        response = await this.cache.get(getKey(this.wsdl, methodName, params));
+        if (!response) {
+          const result = await this.client[methodName + 'Async'](params);
+          response = result[0];
+          // store it in cache as well
+          this.cache.put(
+              getKey(this.wsdl, methodName, params),
+              response,
+              cacheOptions.ttl
+          );
+        }
+      } else {
+        const result = await this.client[methodName + 'Async'](params);
+        response = result[0];
+      }
     } catch (error) {
-      console.log('Error: ', error);
       throw new ApolloError('Error happened when calling a method', error);
     }
-    if (!response[0]) {
+    if (!response) {
       throw new ApolloError(
           'Did not received the response from the endpoint',
           response
       );
     }
-    return response[0];
+    return response;
   }
+}
+
+/**
+ * get the key for
+ *
+ *  @param {String} url wsdl url
+ *  @param {String} methodName soap method name
+ *  @param {Object} params
+ *  @return {String} the hash as key
+ */
+function getKey(url, methodName, params) {
+  const secret = 'SoapSecret';
+  if (!params) {
+    params = {};
+  }
+  const hash = crypto
+      .createHmac('sha256', secret)
+      .update(url + methodName + JSON.stringify(params))
+      .digest('hex');
+  console.log('>>> HASH Key', hash);
+  return hash;
 }
 
 module.exports = SOAPDataSource;
