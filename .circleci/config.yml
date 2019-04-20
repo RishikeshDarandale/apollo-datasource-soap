@@ -16,9 +16,6 @@ jobs:
       - checkout
       - run: npm ci
       - run:
-          name: Do dependency audit
-          command: npm audit
-      - run:
           name: Run tests
           command: npm test
       - persist_to_workspace:
