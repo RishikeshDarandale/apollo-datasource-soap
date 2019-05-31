@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/RishikeshDarandale/apollo-datasource-soap#readme",
   "dependencies": {
-    "apollo-datasource": "^0.4.0",
+    "apollo-datasource": "^0.5.0",
     "apollo-server-caching": "^0.4.0",
     "apollo-server-errors": "^2.2.1",
     "graphql": "^14.1.1",
