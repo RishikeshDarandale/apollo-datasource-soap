@@ -32,7 +32,7 @@
     "soap": "^0.27.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^7.3.2",
+    "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^7.3.1",
     "ava": "^1.1.0",
     "codacy-coverage": "^3.4.0",
