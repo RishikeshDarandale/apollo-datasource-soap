@@ -84,6 +84,37 @@ class TestSoapDataSource extends SOAPDataSource {
 }
 ```
 
+## Decide when to cache
+
+There might be a situation where client needs to decide the response should be cached based on response code. This can be achieved overriding the method `shouldCache` method. `shouldCache` method returns a `boolean` flag to indicate if response can be cached or not. Please take a look at below example:
+
+
+```
+class TestSoapDataSource extends SOAPDataSource {
+  constructor() {
+    super('http://www.thomas-bayer.com/axis2/services/BLZService?wsdl');
+  }
+
+  async willSendRequest(options) {
+    // override the soap endpoint for all requests
+    options.endpoint = 'http://www.thomas-bayer.com/axis2/services/BLZService';
+    // these will be used for all soap calls
+    options.wsdl_headers = {
+      Authorization: token,
+    }
+  }
+
+  async getBank() {
+    // cache the response for 1 hour
+    return await this.invoke('getBank', {blz: 37050198}, {ttl: 3600});
+  }
+
+  shouldCache(response) {
+    return response.code === 0 ? true : false;
+  } 
+}
+```
+
 # Issue or need a new feature?
 
 If you are experiencing a issue or wanted to add a new feature, please create a github issue [here][2].

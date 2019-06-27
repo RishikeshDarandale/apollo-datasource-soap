@@ -97,12 +97,14 @@ class SOAPDataSource extends DataSource {
         if (!response) {
           const result = await this.client[methodName + 'Async'](params);
           response = result[0];
-          // store it in cache as well
-          this.cache.put(
-              getKey(this.wsdl, methodName, params),
-              response,
-              cacheOptions.ttl
-          );
+          if (shouldCache(response)) {
+            // store it in cache as well
+            this.cache.put(
+                getKey(this.wsdl, methodName, params),
+                response,
+                cacheOptions.ttl
+            );
+          }
         }
       } else {
         const result = await this.client[methodName + 'Async'](params);
@@ -119,6 +121,17 @@ class SOAPDataSource extends DataSource {
     }
     return response;
   }
+}
+
+/**
+ * A callback method to decide the soap response is cachable or not
+ *
+ *  @param {Object} response
+ * @return {Boolean} true if cachable or otherwise false.
+ */
+function shouldCache(response) {
+  // by default we will assume response is cachable
+  return response ? true : false;
 }
 
 /**
