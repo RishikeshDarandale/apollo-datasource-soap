@@ -41,6 +41,17 @@ class SOAPDataSource extends DataSource {
   async willSendRequest(options) {}
 
   /**
+   * A callback method to decide the soap response can be cached or not
+   *
+   *  @param {Object} response
+   * @return {Boolean} true if cachable or otherwise false.
+   */
+  shouldCache(response) {
+    // by default we will assume response is cachable
+    return response ? true : false;
+  }
+
+  /**
    * Implement the initialize method to get access to context
    * This will be called by apollo server
    *
@@ -91,13 +102,12 @@ class SOAPDataSource extends DataSource {
       // create the client
       await this.createClient();
       if (cacheOptions && cacheOptions.ttl > 0) {
-        console.log('In cache', JSON.stringify(cacheOptions));
         // caching enabled
         response = await this.cache.get(getKey(this.wsdl, methodName, params));
         if (!response) {
           const result = await this.client[methodName + 'Async'](params);
           response = result[0];
-          if (shouldCache(response)) {
+          if (this.shouldCache(response)) {
             // store it in cache as well
             this.cache.put(
                 getKey(this.wsdl, methodName, params),
@@ -124,17 +134,6 @@ class SOAPDataSource extends DataSource {
 }
 
 /**
- * A callback method to decide the soap response is cachable or not
- *
- *  @param {Object} response
- * @return {Boolean} true if cachable or otherwise false.
- */
-function shouldCache(response) {
-  // by default we will assume response is cachable
-  return response ? true : false;
-}
-
-/**
  * get the key for
  *
  *  @param {String} url wsdl url
@@ -151,7 +150,6 @@ function getKey(url, methodName, params) {
       .createHmac('sha256', secret)
       .update(url + methodName + JSON.stringify(params))
       .digest('hex');
-  console.log('>>> HASH Key', hash);
   return hash;
 }
 
