@@ -6,7 +6,9 @@
   "scripts": {
     "lint": "eslint ./src ./test ./example --fix",
     "test": "nyc ava",
-    "coverage": "nyc report --reporter=text-lcov | codacy-coverage --username RishikeshDarandale --projectName apollo-datasource-soap"
+    "coverage": "nyc report --reporter=text-lcov | codacy-coverage --username RishikeshDarandale --projectName apollo-datasource-soap",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -29,7 +31,8 @@
     "apollo-server-caching": "^0.4.0",
     "apollo-server-errors": "^2.3.0",
     "graphql": "^14.4.0",
-    "soap": "^0.28.0"
+    "soap": "^0.28.0",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.0.0",
@@ -45,5 +48,6 @@
     "prettier": "^1.18.2",
     "proxyquire": "^2.1.0",
     "sinon": "^7.3.2"
-  }
+  },
+  "snyk": true
 }
