@@ -38,7 +38,7 @@ class SOAPCache {
   async get(key) {
     const entry = await this.keyValueCache.get('soapcache:' + key);
     if (entry) {
-      return entry;
+      return JSON.parse(entry);
     }
     return null;
   }
@@ -53,7 +53,7 @@ class SOAPCache {
    */
   async put(key, value, ttl) {
     if (ttl > 0) {
-      await this.keyValueCache.set('soapcache:' + key, value, {
+      await this.keyValueCache.set('soapcache:' + key, JSON.stringify(value), {
         ttl,
       });
     }
