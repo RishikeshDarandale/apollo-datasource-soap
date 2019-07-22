@@ -135,7 +135,11 @@ test(
 test('When incorrect method name is passed, then should throw apollo error', async (t) => {
   await t.throwsAsync(
       datasource.invoke('fakeMethod1', {name: 'James Bond'}),
-      {instanceOf: ApolloError, message: 'Error happened when calling a method'}
+      {
+        instanceOf: ApolloError,
+        message:
+        'TypeError: this.client[(methodName + "Async")] is not a function',
+      }
   );
 });
 

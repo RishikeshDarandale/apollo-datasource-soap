@@ -83,7 +83,7 @@ class SOAPDataSource extends DataSource {
         }
       }
     } catch (error) {
-      throw new ApolloError('Couldnot create the soap client.', this.wsdl);
+      throw new ApolloError(error);
     }
     return this.client;
   }
@@ -121,7 +121,7 @@ class SOAPDataSource extends DataSource {
         response = result[0];
       }
     } catch (error) {
-      throw new ApolloError('Error happened when calling a method', error);
+      throw new ApolloError(error);
     }
     if (!response) {
       throw new ApolloError(
