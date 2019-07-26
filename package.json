@@ -29,7 +29,7 @@
     "apollo-server-caching": "^0.5.0",
     "apollo-server-errors": "^2.3.0",
     "graphql": "^14.4.0",
-    "soap": "^0.28.0"
+    "soap": "^0.29.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.0.0",
