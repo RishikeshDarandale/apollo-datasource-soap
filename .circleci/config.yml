@@ -4,63 +4,121 @@
 #
 version: 2
 
-defaults: &defaults
-  working_directory: ~/repo
-  docker:
-    - image: circleci/node:10.9.0
+###
+# Aliases are common things that can be used in CircleCI config file
+###
+aliases:
+  # commands
+  - &attach_workspace
+      attach_workspace:
+        at: ~/repo
+  - &dependencies_install
+      name: Install node dependencies
+      command: npm ci
 
-jobs:
-  test:
-    <<: *defaults
-    steps:
+  - &security_audit
+      name: Audit the dependencies
+      command: npm audit
+  - &unit_test
+      name: Run unit tests
+      command: npm test
+  - &coverage
+      name: publish code coverage to codacy
+      command: npm run coverage
+  
+  - &auth_npm
+      name: Authenticate with registry
+      command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
+  - &publish_npm
+      name: Publish package
+      command: npm publish
+
+  # steps
+  - &common_steps
+      # checkout the code
       - checkout
-      - run: npm ci
-      - run:
-          name: Run tests
-          command: npm test
+      # install the dependency
+      - run: *dependencies_install
+      # audit for security vulnerabilities
+      - run: *security_audit
+      # unit tests
+      - run: *unit_test
+      # push the coverage to codacy
+      - run: *coverage
+      # Save the workspace
       - persist_to_workspace:
           root: ~/repo
           paths: .
-  codacy-report:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/repo
-      - run:
-          name: publish code coverage to codacy
-          command: npm run coverage
-  deploy:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/repo
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
-      - run:
-          name: Publish package
-          command: npm publish
+      # save the unit tests report and artifacts
+      - store_test_results:
+          path: reports/junit
+      - store_artifacts:
+          path: reports/junit
+      - store_artifacts:
+          path: reports/coverage
 
+  # publish the artifact to npm 
+  - &publish_npm_steps
+      - *attach_workspace
+      - *auth_npm
+      - *publish_npm
+
+  # common filters
+  - &pull-filter
+      branches:
+        # only from forks
+        # we only encourage to raise a PR from forked repository
+        only: /^pull\/.*$/
+
+  - &master-filter
+      branches:
+        only: master
+
+  - &release-filter
+      tags:
+        only: /^v.*/
+      branches:
+        ignore: /.*/
+
+  # build environments
+  - &default_environment
+    working_directory: ~/repo
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:10
+
+
+# CircleCI workflows
 workflows:
   version: 2
-  test-deploy:
+  # workflow for pull request
+  pull_request:
     jobs:
-      - test:
-          filters:
-            tags:
-              only: /^v.*/
-      - codacy-report:
+      - "Do Sanity":
+          filters: *pull-filter
+  # workflow for master
+  master:
+    jobs:
+      - "Do Sanity":
+          filters: *master-filter
+  # workflow for release
+  release:
+    jobs:
+      - "Do Sanity":
+          filters: *release-filter
+      - "publish the package to npm":
           requires:
-            - test
-          filters:
-            branches:
-              only:
-                - master
-      - deploy:
-          requires:
-            - test
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+            - "Do Sanity"
+          filters: *release-filter
+
+# jobs
+jobs:
+  # Basic steps job
+  "Do Sanity":
+    <<: *default_environment
+    steps: *common_steps
+
+  # Deployment Job
+  "publish the package to npm":
+    <<: *default_environment
+    steps: *publish_npm_steps
