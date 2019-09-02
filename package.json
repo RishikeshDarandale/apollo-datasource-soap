@@ -37,7 +37,7 @@
     "ava": "^2.1.0",
     "codacy-coverage": "^3.4.0",
     "eslint": "^6.0.1",
-    "eslint-config-google": "^0.13.0",
+    "eslint-config-google": "^0.14.0",
     "husky": "^3.0.0",
     "lint-staged": "^9.0.2",
     "npm-merge-driver": "latest",
