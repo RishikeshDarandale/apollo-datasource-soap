@@ -123,12 +123,6 @@ class SOAPDataSource extends DataSource {
     } catch (error) {
       throw new ApolloError(error);
     }
-    if (!response) {
-      throw new ApolloError(
-          'Did not received the response from the endpoint',
-          response
-      );
-    }
     return response;
   }
 }

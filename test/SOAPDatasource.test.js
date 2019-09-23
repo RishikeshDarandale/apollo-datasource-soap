@@ -102,30 +102,28 @@ test('When correct cached method is invoked, then should get cached response', a
  * Negative test case
  */
 test(
-    'When correct method with params is passed and service failed, ' +
-    'then should throw apollo error',
+    'When correct method with params is passed and service returns an empty response, ' +
+    'then should not fail',
     async (t) => {
-      await t.throwsAsync(
-          datasource.invoke('fakeMethod2', {name: 'James Bond'}),
-          {
-            instanceOf: ApolloError,
-            message: 'Did not received the response from the endpoint',
-          }
-      );
+      const response = await datasource.invoke('fakeMethod2', {
+        name: 'James Bond',
+      });
+      t.falsy(response);
+      t.pass();
     }
 );
 
 test(
-    'When correct method with params is passed and service failed, ' +
-    'then should throw apollo error and should not cache the result',
+    'When correct method with params is passed and service returns an empty response, ' +
+    'then should not fail and should not cache the result',
     async (t) => {
-      await t.throwsAsync(
-          datasource.invoke('fakeMethod2', {name: 'James Bond'}, {ttl: 5}),
-          {
-            instanceOf: ApolloError,
-            message: 'Did not received the response from the endpoint',
-          }
+      const response = await datasource.invoke(
+          'fakeMethod2',
+          {name: 'James Bond'},
+          {ttl: 5}
       );
+      t.falsy(response);
+      t.pass();
     }
 );
 
