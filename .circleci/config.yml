@@ -60,15 +60,18 @@ aliases:
   # publish the artifact to npm 
   - &publish_npm_steps
       - *attach_workspace
-      - *auth_npm
-      - *publish_npm
+      - run: *auth_npm
+      - run: *publish_npm
 
   # common filters
   - &pull-filter
       branches:
-        # only from forks
-        # we only encourage to raise a PR from forked repository
-        only: /^pull\/.*$/
+        only:
+          # only from forks
+          # we only encourage to raise a PR from forked repository
+          - /^pull\/.*$/
+          # dependabot branches from the upstream repository
+          - /^dependabot\/.*$/
 
   - &master-filter
       branches:
