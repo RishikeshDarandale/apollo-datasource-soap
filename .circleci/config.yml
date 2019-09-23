@@ -66,9 +66,12 @@ aliases:
   # common filters
   - &pull-filter
       branches:
-        # only from forks
-        # we only encourage to raise a PR from forked repository
-        only: /^pull\/.*$/
+        only:
+          # only from forks
+          # we only encourage to raise a PR from forked repository
+          - /^pull\/.*$/
+          # dependabot branches from the upstream repository
+          - /^dependabot\/.*$/
 
   - &master-filter
       branches:
