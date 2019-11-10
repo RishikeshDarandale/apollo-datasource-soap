@@ -27,22 +27,22 @@
   "dependencies": {
     "apollo-datasource": "^0.6.0",
     "apollo-server-caching": "^0.5.0",
-    "apollo-server-errors": "^2.3.0",
-    "graphql": "^14.4.0",
-    "soap": "^0.29.0"
+    "apollo-server-errors": "^2.3.4",
+    "graphql": "^14.5.8",
+    "soap": "^0.30.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "ava": "^2.1.0",
     "codacy-coverage": "^3.4.0",
-    "eslint": "^6.0.1",
+    "eslint": "^6.6.0",
     "eslint-config-google": "^0.14.0",
-    "husky": "^3.0.0",
-    "lint-staged": "^9.0.2",
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.2",
     "npm-merge-driver": "latest",
     "nyc": "^14.1.1",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "proxyquire": "^2.1.0",
     "sinon": "^7.3.2"
   }
