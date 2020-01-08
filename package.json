@@ -38,7 +38,7 @@
     "codacy-coverage": "^3.4.0",
     "eslint": "^6.6.0",
     "eslint-config-google": "^0.14.0",
-    "husky": "^3.0.9",
+    "husky": "^4.0.1",
     "lint-staged": "^9.4.2",
     "npm-merge-driver": "latest",
     "nyc": "^14.1.1",
