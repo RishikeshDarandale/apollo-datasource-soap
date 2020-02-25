@@ -41,7 +41,7 @@
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0",
     "npm-merge-driver": "latest",
-    "nyc": "^14.1.1",
+    "nyc": "^15.0.0",
     "prettier": "^1.19.1",
     "proxyquire": "^2.1.0",
     "sinon": "^7.3.2"
