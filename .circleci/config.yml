@@ -18,7 +18,7 @@ aliases:
 
   - &security_audit
       name: Audit the dependencies
-      command: npm audit
+      command: npm audit --production
   - &unit_test
       name: Run unit tests
       command: npm test
@@ -88,7 +88,7 @@ aliases:
     working_directory: ~/repo
     docker:
       # specify the version you desire here
-      - image: circleci/node:10
+      - image: circleci/node:12
 
 
 # CircleCI workflows
