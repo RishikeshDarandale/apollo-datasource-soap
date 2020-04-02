@@ -28,7 +28,7 @@
     "apollo-datasource": "^0.7.0",
     "apollo-server-caching": "^0.5.1",
     "apollo-server-errors": "^2.3.4",
-    "graphql": "^14.6.0",
+    "graphql": "^15.0.0",
     "soap": "^0.31.0"
   },
   "devDependencies": {
