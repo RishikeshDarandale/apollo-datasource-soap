@@ -5,10 +5,10 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "pretest": "prettier --check . && eslint ./src",
+    "pretest": "npm audit -production && prettier --check . && eslint ./src",
     "build": "tsc",
     "test": "jest --coverage",
-    "coverage": "cat reports/coverage/lcov.info | codacy-coverage --username RishikeshDarandale --projectName apollo-datasource-soap"
+    "prepublishOnly": "npm test --ci --maxWorkers=2"
   },
   "repository": {
     "type": "git",
@@ -43,7 +43,6 @@
     "@types/sax": "^1.2.1",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
-    "codacy-coverage": "^3.4.0",
     "eslint": "^7.12.0",
     "eslint-config-prettier": "^6.14.0",
     "husky": "^4.2.3",
