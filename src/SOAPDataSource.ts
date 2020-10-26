@@ -1,29 +1,42 @@
 'use strict';
 
-const crypto = require('crypto');
+import * as crypto from 'crypto';
 
-const {DataSource} = require('apollo-datasource');
-const {ApolloError} = require('apollo-server-errors');
-const soap = require('soap');
+import { DataSource, DataSourceConfig } from 'apollo-datasource';
+import { ApolloError } from 'apollo-server-errors';
+import { Client, createClientAsync, IOptions } from 'soap';
 
-const SOAPCache = require('./SOAPCache.js');
+import { SOAPCache } from './SOAPCache';
+
+export interface CacheOptions {
+  ttl: number;
+}
+
+export interface SoapClientOptions extends IOptions {
+  soapHeader?: any;
+}
 
 /**
  * A Soap datasource class
  *
  */
-class SOAPDataSource extends DataSource {
+export class SOAPDataSource<TContext = any> extends DataSource {
+  private wsdl: string;
+  private options: SoapClientOptions;
+  private cache!: SOAPCache;
+  private context!: TContext;
+  private client!: Client;
   /**
    * constructor
    *
    * @param {String} wsdl a wsdl url of a soap service
    *
    */
-  constructor(wsdl) {
+  constructor(wsdl: string) {
     super();
     if (!wsdl) {
       throw new ApolloError(
-          'Cannot make request to SOAP endpoint, missing soap wsdl url.'
+        'Cannot make request to SOAP endpoint, missing soap wsdl url.'
       );
     }
     this.wsdl = wsdl;
@@ -36,17 +49,18 @@ class SOAPDataSource extends DataSource {
   /**
    * Intercept the request and append client options
    *
-   * @param {Object} options an object options of [soap](https://www.npmjs.com/package/soap#options) npm module
+   * @param {IOptions} options an object options of [soap](https://www.npmjs.com/package/soap#options) npm module
    */
-  async willSendRequest(options) {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected async willSendRequest(options: SoapClientOptions): Promise<void> {}
 
   /**
    * A callback method to decide the soap response can be cached or not
    *
-   *  @param {Object} response
+   * @param {Object} response
    * @return {Boolean} true if cachable or otherwise false.
    */
-  shouldCache(response) {
+  protected shouldCache(response: any): boolean {
     // by default we will assume response is cachable
     return response ? true : false;
   }
@@ -58,7 +72,7 @@ class SOAPDataSource extends DataSource {
    * @param {DataSourceConfig} config a datasource config object
    *
    */
-  initialize(config) {
+  initialize(config: DataSourceConfig<TContext>): void {
     this.context = config.context;
     this.cache = new SOAPCache(config.cache);
   }
@@ -66,15 +80,15 @@ class SOAPDataSource extends DataSource {
   /**
    * Get a soap client for given wsdl url
    */
-  async createClient() {
+  private async createClient(): Promise<Client> {
     try {
       if (!this.client) {
         await this.willSendRequest(this.options);
-        this.client = await soap.createClientAsync(this.wsdl, this.options);
+        this.client = await createClientAsync(this.wsdl, this.options);
         // lets use wsdl_headers for each soap method invocation.
         if (this.options.wsdl_headers) {
           Object.keys(this.options.wsdl_headers).forEach((key) =>
-            this.client.addHttpHeader(key, this.options.wsdl_headers[key])
+            this.client.addHttpHeader(key, this.options.wsdl_headers![key])
           );
         }
         // soap header should be a object with strict xml-string
@@ -91,12 +105,16 @@ class SOAPDataSource extends DataSource {
   /**
    * Invoke the soap method
    *
-   * @param {String} methodName the methodname to Invoke
+   * @param {String} methodName the method name to Invoke
    * @param {Object} params the params for soap method
-   * @param {Object} cacheOptions options for caching
+   * @param {CacheOptions} cacheOptions options for caching
    *
    */
-  async invoke(methodName, params, cacheOptions) {
+  public async invoke(
+    methodName: string,
+    params?: any,
+    cacheOptions?: CacheOptions
+  ): Promise<any> {
     let response;
     try {
       // create the client
@@ -110,9 +128,9 @@ class SOAPDataSource extends DataSource {
           if (this.shouldCache(response)) {
             // store it in cache as well
             this.cache.put(
-                getKey(this.wsdl, methodName, params),
-                response,
-                cacheOptions.ttl
+              getKey(this.wsdl, methodName, params),
+              response,
+              cacheOptions.ttl
             );
           }
         }
@@ -135,16 +153,14 @@ class SOAPDataSource extends DataSource {
  *  @param {Object} params
  *  @return {String} the hash as key
  */
-function getKey(url, methodName, params) {
+function getKey(url: string, methodName: string, params: any): string {
   const secret = 'SoapSecret';
   if (!params) {
     params = {};
   }
   const hash = crypto
-      .createHmac('sha256', secret)
-      .update(url + methodName + JSON.stringify(params))
-      .digest('hex');
+    .createHmac('sha256', secret)
+    .update(url + methodName + JSON.stringify(params))
+    .digest('hex');
   return hash;
 }
-
-module.exports = SOAPDataSource;

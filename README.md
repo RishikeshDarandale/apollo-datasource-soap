@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/RishikeshDarandale/apollo-datasource-soap.svg?style=svg)](https://circleci.com/gh/RishikeshDarandale/apollo-datasource-soap)
 [![Known Vulnerabilities](https://snyk.io/test/github/RishikeshDarandale/apollo-datasource-soap/badge.svg)](https://snyk.io/test/github/RishikeshDarandale/apollo-datasource-soap)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b5521af6e43f477a85b40d146177dc32)](https://www.codacy.com/app/RishikeshDarandale/apollo-datasource-soap?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RishikeshDarandale/apollo-datasource-soap&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b5521af6e43f477a85b40d146177dc32)](https://www.codacy.com/app/RishikeshDarandale/apollo-datasource-soap?utm_source=github.com&utm_medium=referral&utm_content=RishikeshDarandale/apollo-datasource-soap&utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/4c6f4aac6d12468c9eb1d2fd0eace794)](https://www.codacy.com/app/RishikeshDarandale/apollo-datasource-soap?utm_source=github.com&utm_medium=referral&utm_content=RishikeshDarandale/apollo-datasource-soap&utm_campaign=Badge_Coverage)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=RishikeshDarandale/apollo-datasource-soap)](https://dependabot.com)
 [![npm](https://img.shields.io/npm/v/apollo-datasource-soap.svg)](https://www.npmjs.com/package/apollo-datasource-soap)
@@ -88,7 +88,6 @@ class TestSoapDataSource extends SOAPDataSource {
 
 There might be a situation where client needs to decide the response should be cached based on response code. This can be achieved overriding the method `shouldCache` method. `shouldCache` method returns a `boolean` flag to indicate if response can be cached or not. Please take a look at below example:
 
-
 ```
 class TestSoapDataSource extends SOAPDataSource {
   constructor() {
@@ -111,7 +110,7 @@ class TestSoapDataSource extends SOAPDataSource {
 
   shouldCache(response) {
     return response.code === 0 ? true : false;
-  } 
+  }
 }
 ```
 
@@ -134,7 +133,6 @@ For impatient here are quick steps:
 - **Write** unit test cases for your work.
 - Check the **Build** on your local.
 - Raise a **Pull Request** (aka PR)
-
 
 [1]: https://www.apollographql.com/docs/apollo-server/features/data-sources.html
 [2]: https://github.com/RishikeshDarandale/apollo-datasource-soap/issues/new

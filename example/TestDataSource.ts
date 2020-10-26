@@ -1,4 +1,4 @@
-const SOAPDataSource = require('../src/SOAPDataSource.js');
+import { SOAPDataSource } from '../src/SOAPDataSource';
 
 /**
  * Test dataSource
@@ -30,19 +30,6 @@ class TestSoapDataSource extends SOAPDataSource {
    * This operation is present in above service
    */
   async getBank() {
-    return await this.invoke('getBank', {blz: 37050198});
+    return await this.invoke('getBank', { blz: 37050198 });
   }
 }
-
-/**
- * test method to instantiate and execute the test method
- */
-async function test() {
-  const testSoapDataSource = new TestSoapDataSource();
-  console.log(await testSoapDataSource.getBank());
-}
-
-/**
- * execute this with Node
- */
-test();

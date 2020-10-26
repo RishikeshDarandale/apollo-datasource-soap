@@ -1,0 +1,7 @@
+'*.{ts,tsx}':
+  - prettier --check
+  - eslint
+'*.js{,x,on}':
+  - prettier --check
+'*.md{,x}':
+  - prettier --check

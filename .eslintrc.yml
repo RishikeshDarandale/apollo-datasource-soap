@@ -1,7 +1,8 @@
-parserOptions:
-  ecmaVersion: 2017
-extends: google
-rules:
-  max-len:
-    - 2
-    - code: 120
+parser: '@typescript-eslint/parser'
+plugins:
+  - '@typescript-eslint'
+extends:
+  - 'eslint:recommended'
+  - 'plugin:@typescript-eslint/eslint-recommended'
+  - 'plugin:@typescript-eslint/recommended'
+  - 'prettier/@typescript-eslint'

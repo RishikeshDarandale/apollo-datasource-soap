@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "declaration": true,
+    "lib": ["es2017", "esnext.asynciterable"],
+    "outDir": "./lib",
+    "strict": true
+  },
+  "include": ["src/*", "test/*"],
+  "exclude": ["node_modules/*"]
+}

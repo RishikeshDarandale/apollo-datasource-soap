@@ -2,7 +2,6 @@
 
 This document describes how to contribute to this repository.
 
-
 ## Pre-requisite
 
 - Node.js >= v8

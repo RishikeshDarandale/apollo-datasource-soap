@@ -1,6 +1,6 @@
 'use strict';
 
-const {InMemoryLRUCache} = require('apollo-server-caching');
+import { InMemoryLRUCache, KeyValueCache } from 'apollo-server-caching';
 
 /**
  * SOAP Cache utility
@@ -8,23 +8,24 @@ const {InMemoryLRUCache} = require('apollo-server-caching');
  * SOAP is sent as HTTP POST and its a non-idempotent. Thus it can not be cached
  * at HTTP level.
  *
- * This[1] is draft verison of document for response caching for SOAP, but did
- * not found any implementaion of it.
+ * This[1] is draft version of document for response caching for SOAP, but did
+ * not found any implementation of it.
  *
  * Thus it make sense to client decide to cache it or not and for much duration.
  *
  * [1]: https://lists.w3.org/Archives/Public/www-ws/2001Aug/att-0000/ResponseCache.html
  */
-class SOAPCache {
+export class SOAPCache {
+  private keyValueCache: KeyValueCache;
   /**
    * A constructor
    *
    * @param {Object} keyValueCache a cache object from apollo server en
    */
-  constructor(keyValueCache) {
+  constructor(keyValueCache: KeyValueCache) {
     this.keyValueCache = keyValueCache;
     if (!this.keyValueCache) {
-      this.keyValueCache = new InMemoryLRUCache();
+      this.keyValueCache = new InMemoryLRUCache<string>();
     }
   }
 
@@ -35,7 +36,7 @@ class SOAPCache {
    * @return {Object} a value of the cached object
    *
    */
-  async get(key) {
+  async get(key: string): Promise<any> {
     const entry = await this.keyValueCache.get('soapcache:' + key);
     if (entry) {
       return JSON.parse(entry);
@@ -51,7 +52,7 @@ class SOAPCache {
    * @param {Integer} ttl the ttl value in seconds
    *
    */
-  async put(key, value, ttl) {
+  async put(key: string, value: any, ttl: number): Promise<void> {
     if (ttl > 0) {
       await this.keyValueCache.set('soapcache:' + key, JSON.stringify(value), {
         ttl,
@@ -59,5 +60,3 @@ class SOAPCache {
     }
   }
 }
-
-module.exports = SOAPCache;
