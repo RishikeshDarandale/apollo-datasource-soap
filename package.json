@@ -8,7 +8,9 @@
     "pretest": "npm audit --production && prettier --check . && eslint ./src",
     "build": "tsc",
     "test": "jest --coverage",
-    "prepublishOnly": "npm test --ci --maxWorkers=2"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test",
+    "deploy": "npm publish"
   },
   "repository": {
     "type": "git",
