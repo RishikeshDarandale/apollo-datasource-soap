@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "pretest": "npm audit -production && prettier --check . && eslint ./src",
+    "pretest": "npm audit --production && prettier --check . && eslint ./src",
     "build": "tsc",
     "test": "jest --coverage",
     "prepublishOnly": "npm test --ci --maxWorkers=2"
