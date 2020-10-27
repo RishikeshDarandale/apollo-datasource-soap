@@ -4,3 +4,6 @@ jspm_packages/
 
 #reports
 reports/
+
+#build lib
+lib/
