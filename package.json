@@ -33,7 +33,7 @@
     "apollo-server-caching": "^0.7.0",
     "apollo-server-errors": "^2.5.0",
     "graphql": "^15.5.0",
-    "soap": "^0.37.0"
+    "soap": "^0.38.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",
