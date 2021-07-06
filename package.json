@@ -8,7 +8,7 @@
     "pretest": "npm audit --production && prettier --check . && eslint ./src",
     "build": "tsc",
     "test": "jest --coverage",
-    "prepare": "npm run build",
+    "prepare": "npm run build && husky install",
     "prepublishOnly": "npm test",
     "deploy": "npm publish"
   },
@@ -33,7 +33,7 @@
     "apollo-server-caching": "^0.7.0",
     "apollo-server-errors": "^2.5.0",
     "graphql": "^15.5.1",
-    "soap": "^0.37.0"
+    "soap": "^0.39.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
@@ -47,7 +47,7 @@
     "@typescript-eslint/parser": "^4.28.2",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
-    "husky": "^4.3.8",
+    "husky": "^7.0.0",
     "jest": "^27.0.6",
     "lint-staged": "^11.0.0",
     "npm-merge-driver": "latest",
