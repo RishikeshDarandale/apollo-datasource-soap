@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@4.1.0
+  node: circleci/node@4.5.1
 
 ###
 # Aliases are common things that can be used in CircleCI config file
@@ -36,14 +36,14 @@ workflows:
     jobs:
       - node/test:
           run-command: test -- --ci --maxWorkers=2
-          version: 12.19.0
+          version: 14.17.3
           filters: *pull-filter
   # workflow for master branch
   master:
     jobs:
       - node/test:
           run-command: test -- --ci --maxWorkers=2
-          version: 12.19.0
+          version: 14.17.3
           filters: *master-filter
   # Release workflow
   release:
@@ -52,5 +52,5 @@ workflows:
           setup:
             - run: *auth_npm
           run-command: deploy
-          version: 12.19.0
+          version: 14.17.3
           filters: *release-filter
