@@ -1,9 +1,8 @@
 # apollo-datasource-soap
 
 [![CircleCI](https://circleci.com/gh/RishikeshDarandale/apollo-datasource-soap.svg?style=svg)](https://circleci.com/gh/RishikeshDarandale/apollo-datasource-soap)
+![CodeQL Analysis](https://github.com/RishikeshDarandale/apollo-datasource-soap/actions/workflows/codeql-analysis.yml/badge.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/RishikeshDarandale/apollo-datasource-soap/badge.svg)](https://snyk.io/test/github/RishikeshDarandale/apollo-datasource-soap)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b5521af6e43f477a85b40d146177dc32)](https://www.codacy.com/app/RishikeshDarandale/apollo-datasource-soap?utm_source=github.com&utm_medium=referral&utm_content=RishikeshDarandale/apollo-datasource-soap&utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/4c6f4aac6d12468c9eb1d2fd0eace794)](https://www.codacy.com/app/RishikeshDarandale/apollo-datasource-soap?utm_source=github.com&utm_medium=referral&utm_content=RishikeshDarandale/apollo-datasource-soap&utm_campaign=Badge_Coverage)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=RishikeshDarandale/apollo-datasource-soap)](https://dependabot.com)
 [![npm](https://img.shields.io/npm/v/apollo-datasource-soap.svg)](https://www.npmjs.com/package/apollo-datasource-soap)
 [![npm](https://img.shields.io/npm/dt/apollo-datasource-soap.svg)](https://www.npmjs.com/package/apollo-datasource-soap)
