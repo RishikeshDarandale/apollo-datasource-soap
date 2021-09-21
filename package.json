@@ -29,30 +29,30 @@
   },
   "homepage": "https://github.com/RishikeshDarandale/apollo-datasource-soap#readme",
   "dependencies": {
-    "apollo-datasource": "^3.0.3",
-    "apollo-server-caching": "^3.0.1",
-    "apollo-server-errors": "^3.0.1",
-    "graphql": "^15.5.1",
-    "soap": "^0.40.0"
+    "apollo-datasource": "^3.1.0",
+    "apollo-server-caching": "^3.1.0",
+    "apollo-server-errors": "^3.1.0",
+    "graphql": "^15.6.0",
+    "soap": "^0.42.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@types/bluebird": "^3.5.35",
-    "@types/jest": "^26.0.23",
-    "@types/node": "^14.17.9",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.9.4",
     "@types/request": "^2.48.7",
     "@types/sax": "^1.2.3",
-    "@typescript-eslint/eslint-plugin": "^4.29.0",
-    "@typescript-eslint/parser": "^4.29.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.2",
+    "@typescript-eslint/parser": "^4.31.2",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
-    "husky": "^7.0.0",
-    "jest": "^27.0.6",
-    "lint-staged": "^11.1.1",
+    "husky": "^7.0.2",
+    "jest": "^27.2.1",
+    "lint-staged": "^11.1.2",
     "npm-merge-driver": "latest",
-    "prettier": "^2.3.2",
-    "ts-jest": "^27.0.4",
-    "typescript": "^4.3.5"
+    "prettier": "^2.4.1",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.3"
   }
 }

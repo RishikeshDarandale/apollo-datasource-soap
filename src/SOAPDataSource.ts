@@ -97,7 +97,7 @@ export class SOAPDataSource<TContext = any> extends DataSource {
         }
       }
     } catch (error) {
-      throw new ApolloError(error);
+      throw new ApolloError((error as Error).message);
     }
     return this.client;
   }
@@ -139,7 +139,7 @@ export class SOAPDataSource<TContext = any> extends DataSource {
         response = result[0];
       }
     } catch (error) {
-      throw new ApolloError(error);
+      throw new ApolloError((error as Error).message);
     }
     return response;
   }
