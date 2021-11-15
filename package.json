@@ -1,6 +1,6 @@
 {
   "name": "apollo-datasource-soap",
-  "version": "1.2.6",
+  "version": "2.0.0",
   "description": "A simple implementation of apollo datasource for soap requests",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
