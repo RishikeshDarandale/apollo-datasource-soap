@@ -3,14 +3,18 @@
 [![CircleCI](https://circleci.com/gh/RishikeshDarandale/apollo-datasource-soap.svg?style=svg)](https://circleci.com/gh/RishikeshDarandale/apollo-datasource-soap)
 ![CodeQL Analysis](https://github.com/RishikeshDarandale/apollo-datasource-soap/actions/workflows/codeql-analysis.yml/badge.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/RishikeshDarandale/apollo-datasource-soap/badge.svg)](https://snyk.io/test/github/RishikeshDarandale/apollo-datasource-soap)
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=RishikeshDarandale/apollo-datasource-soap)](https://dependabot.com)
 [![npm](https://img.shields.io/npm/v/apollo-datasource-soap.svg)](https://www.npmjs.com/package/apollo-datasource-soap)
 [![npm](https://img.shields.io/npm/dt/apollo-datasource-soap.svg)](https://www.npmjs.com/package/apollo-datasource-soap)
 [![NpmLicense](https://img.shields.io/npm/l/apollo-datasource-soap.svg)](https://github.com/RishikeshDarandale/apollo-datasource-soap/blob/master/LICENSE)
 
-A simple implementaion of apollo datasource for soap requests
+A simple implementation of apollo datasource for soap requests
 
-Connect the SOAP based services to your Apollo server 2.0 using [Data Sources][1]
+Connect the SOAP based services to your Apollo server using [Data Sources][1]
+
+`apollo-datasource-soap` versions:
+
+- 1.x => apollo server 2.x
+- 2.x => apollo server 3.x
 
 # Soap Data Source
 
