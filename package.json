@@ -36,8 +36,8 @@
     "soap": "^0.43.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^14.1.0",
-    "@commitlint/config-conventional": "^14.1.0",
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
     "@types/bluebird": "^3.5.35",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.9.4",
