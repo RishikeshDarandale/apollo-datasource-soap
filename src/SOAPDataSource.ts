@@ -24,7 +24,7 @@ export class SOAPDataSource<TContext = any> extends DataSource {
   private wsdl: string;
   private options: SoapClientOptions;
   private cache!: SOAPCache;
-  private context!: TContext;
+  protected context!: TContext;
   private client!: Client;
   /**
    * constructor
@@ -49,7 +49,8 @@ export class SOAPDataSource<TContext = any> extends DataSource {
   /**
    * Intercept the request and append client options
    *
-   * @param {IOptions} options an object options of [soap](https://www.npmjs.com/package/soap#options) npm module
+   * @param {IOptions} options an object options of
+   * [soap](https://www.npmjs.com/package/soap#options) npm module
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected async willSendRequest(options: SoapClientOptions): Promise<void> {}
