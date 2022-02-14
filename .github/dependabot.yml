@@ -2,6 +2,6 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     # Files stored in `app` directory
-    directory: "/app"
+    directory: "/"
     schedule:
       interval: "daily"
