@@ -36,7 +36,7 @@ export class SOAPDataSource<TContext = any> extends DataSource {
     super();
     if (!wsdl) {
       throw new ApolloError(
-        'Cannot make request to SOAP endpoint, missing soap wsdl url.'
+        'Cannot make request to SOAP endpoint, missing soap wsdl url.',
       );
     }
     this.wsdl = wsdl;
@@ -89,7 +89,7 @@ export class SOAPDataSource<TContext = any> extends DataSource {
         // lets use wsdl_headers for each soap method invocation.
         if (this.options.wsdl_headers) {
           Object.keys(this.options.wsdl_headers).forEach((key) =>
-            this.client.addHttpHeader(key, this.options.wsdl_headers![key])
+            this.client.addHttpHeader(key, this.options.wsdl_headers![key]),
           );
         }
         // soap header should be a object with strict xml-string
@@ -114,7 +114,7 @@ export class SOAPDataSource<TContext = any> extends DataSource {
   public async invoke(
     methodName: string,
     params?: any,
-    cacheOptions?: CacheOptions
+    cacheOptions?: CacheOptions,
   ): Promise<any> {
     let response;
     try {
@@ -131,7 +131,7 @@ export class SOAPDataSource<TContext = any> extends DataSource {
             this.cache.put(
               getKey(this.wsdl, methodName, params),
               response,
-              cacheOptions.ttl
+              cacheOptions.ttl,
             );
           }
         }

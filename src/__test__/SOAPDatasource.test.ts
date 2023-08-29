@@ -18,16 +18,16 @@ jest.mock('soap', () => {
               message:
                 'Hello James Bond from fake Service ' + new Date().getTime(),
             },
-          ])
+          ]),
         ),
         fakeMethod2Async: jest.fn().mockResolvedValue([]),
-      })
+      }),
     ),
   };
 });
 
 const datasource: SOAPDataSource = new SOAPDataSource(
-  'https://fake.com/fake-service?wsdl'
+  'https://fake.com/fake-service?wsdl',
 );
 datasource.initialize({ context: {}, cache: new InMemoryLRUCache<string>() });
 
@@ -44,7 +44,7 @@ it('When correct method with params is passed with ttl to cache, then should get
     {
       name: 'James Bond',
     },
-    { ttl: 60 }
+    { ttl: 60 },
   );
   expect(response).toEqual({ message: 'Hello James Bond from fake Service' });
 });
@@ -55,7 +55,7 @@ it('When correct cached method is invoked, then should get cached response', asy
     {
       name: 'James Bond',
     },
-    { ttl: 2 }
+    { ttl: 2 },
   );
   // await
   await new Promise((resolve) => setTimeout(resolve, 800));
@@ -64,7 +64,7 @@ it('When correct cached method is invoked, then should get cached response', asy
     {
       name: 'James Bond',
     },
-    { ttl: 2 }
+    { ttl: 2 },
   );
   expect(firstResponse).toEqual(secondResponse);
   // await
@@ -74,7 +74,7 @@ it('When correct cached method is invoked, then should get cached response', asy
     {
       name: 'James Bond',
     },
-    { ttl: 2 }
+    { ttl: 2 },
   );
   expect(firstResponse).not.toEqual(thirdResponse);
 });
@@ -87,7 +87,7 @@ it(
       name: 'James Bond',
     });
     expect(response).toBeUndefined;
-  }
+  },
 );
 
 it(
@@ -97,14 +97,14 @@ it(
     const response = await datasource.invoke(
       'fakeMethod2',
       { name: 'James Bond' },
-      { ttl: 5 }
+      { ttl: 5 },
     );
     expect(response).toBeUndefined;
-  }
+  },
 );
 
 it('When incorrect method name is passed, then should throw apollo error', async () => {
   await expect(
-    datasource.invoke('fakeMethod1', { name: 'James Bond' })
+    datasource.invoke('fakeMethod1', { name: 'James Bond' }),
   ).rejects.toThrow(ApolloError);
 });
