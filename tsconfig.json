@@ -5,7 +5,8 @@
     "declaration": true,
     "lib": ["es2017", "esnext.asynciterable"],
     "outDir": "./lib",
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true
   },
   "include": ["src/*", "test/*"],
   "exclude": ["node_modules/*"]
