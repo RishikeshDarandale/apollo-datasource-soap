@@ -53,6 +53,7 @@ export class SOAPDataSource<TContext = any> extends DataSource {
    * [soap](https://www.npmjs.com/package/soap#options) npm module
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected async willSendRequest(options: SoapClientOptions): Promise<void> {}
 
   /**
