@@ -1,5 +1,5 @@
-import { InMemoryLRUCache } from 'apollo-server-caching';
-import { ApolloError } from 'apollo-server-errors';
+import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
+import { GraphQLError } from 'graphql';
 import { SOAPDataSource } from '../SOAPDataSource';
 
 jest.mock('soap', () => {
@@ -28,8 +28,10 @@ jest.mock('soap', () => {
 
 const datasource: SOAPDataSource = new SOAPDataSource(
   'https://fake.com/fake-service?wsdl',
+  {
+    cache: new InMemoryLRUCache<string, any>(),
+  },
 );
-datasource.initialize({ context: {}, cache: new InMemoryLRUCache<string>() });
 
 it('When correct method with params is passed, then should get valid response', async () => {
   const response = await datasource.invoke('fakeMethod', {
@@ -106,5 +108,5 @@ it(
 it('When incorrect method name is passed, then should throw apollo error', async () => {
   await expect(
     datasource.invoke('fakeMethod1', { name: 'James Bond' }),
-  ).rejects.toThrow(ApolloError);
+  ).rejects.toThrow(GraphQLError);
 });

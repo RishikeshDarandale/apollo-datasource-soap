@@ -15,6 +15,7 @@ Connect the SOAP based services to your Apollo server using [Data Sources][1]
 
 - 1.x => apollo server 2.x
 - 2.x => apollo server 3.x
+- 3.x => apollo server 4.x
 
 # Soap Data Source
 
@@ -34,10 +35,13 @@ yarn add apollo-dataSource-soap
 
 Define a data source by extending the `SOAPDataSource` class. You can invoke the soap method with param by invoking `invoke` method.
 
+The cache can be initialized as specified in [apollo migration 4 guide]
+
 ```
 class TestSoapDataSource extends SOAPDataSource {
   constructor() {
-    super('http://www.thomas-bayer.com/axis2/services/BLZService?wsdl');
+    // pass the cache as per your requirement
+    super('http://www.thomas-bayer.com/axis2/services/BLZService?wsdl', {cache: new InMemoryLRUCache<string, any>()});
   }
 
   async willSendRequest(options) {
@@ -68,7 +72,8 @@ Specify the ttl to cache the SOAP response.
 ```
 class TestSoapDataSource extends SOAPDataSource {
   constructor() {
-    super('http://www.thomas-bayer.com/axis2/services/BLZService?wsdl');
+    // pass the cache as per your requirement
+    super('http://www.thomas-bayer.com/axis2/services/BLZService?wsdl', {cache: new InMemoryLRUCache<string, any>()});
   }
 
   async willSendRequest(options) {
@@ -94,7 +99,8 @@ There might be a situation where client needs to decide the response should be c
 ```
 class TestSoapDataSource extends SOAPDataSource {
   constructor() {
-    super('http://www.thomas-bayer.com/axis2/services/BLZService?wsdl');
+    // pass the cache as per your requirement
+    super('http://www.thomas-bayer.com/axis2/services/BLZService?wsdl', {cache: new InMemoryLRUCache<string, any>()});
   }
 
   async willSendRequest(options) {
@@ -141,3 +147,4 @@ For impatient here are quick steps:
 [2]: https://github.com/RishikeshDarandale/apollo-datasource-soap/issues/new
 [3]: ./CONTRIBUTING.md
 [4]: https://lists.w3.org/Archives/Public/www-ws/2001Aug/att-0000/ResponseCache.html
+[5]: https://www.apollographql.com/docs/apollo-server/migration#datasources

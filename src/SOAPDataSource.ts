@@ -2,14 +2,18 @@
 
 import * as crypto from 'crypto';
 
-import { DataSource, DataSourceConfig } from 'apollo-datasource';
-import { ApolloError } from 'apollo-server-errors';
+import { KeyValueCache } from '@apollo/utils.keyvaluecache';
+import { GraphQLError } from 'graphql';
 import { Client, createClientAsync, IOptions } from 'soap';
 
 import { SOAPCache } from './SOAPCache';
 
 export interface CacheOptions {
   ttl: number;
+}
+
+export interface DataSourceConfig {
+  cache?: KeyValueCache;
 }
 
 export interface SoapClientOptions extends IOptions {
@@ -20,11 +24,10 @@ export interface SoapClientOptions extends IOptions {
  * A Soap datasource class
  *
  */
-export class SOAPDataSource<TContext = any> extends DataSource {
+export class SOAPDataSource {
   private wsdl: string;
   private options: SoapClientOptions;
   private cache!: SOAPCache;
-  protected context!: TContext;
   private client!: Client;
   /**
    * constructor
@@ -32,14 +35,14 @@ export class SOAPDataSource<TContext = any> extends DataSource {
    * @param {String} wsdl a wsdl url of a soap service
    *
    */
-  constructor(wsdl: string) {
-    super();
+  constructor(wsdl: string, config: DataSourceConfig) {
     if (!wsdl) {
-      throw new ApolloError(
+      throw new GraphQLError(
         'Cannot make request to SOAP endpoint, missing soap wsdl url.',
       );
     }
     this.wsdl = wsdl;
+    this.cache = new SOAPCache(config.cache);
     this.options = {
       wsdl_headers: {},
       wsdl_options: {},
@@ -68,18 +71,6 @@ export class SOAPDataSource<TContext = any> extends DataSource {
   }
 
   /**
-   * Implement the initialize method to get access to context
-   * This will be called by apollo server
-   *
-   * @param {DataSourceConfig} config a datasource config object
-   *
-   */
-  initialize(config: DataSourceConfig<TContext>): void {
-    this.context = config.context;
-    this.cache = new SOAPCache(config.cache);
-  }
-
-  /**
    * Get a soap client for given wsdl url
    */
   private async createClient(): Promise<Client> {
@@ -99,7 +90,7 @@ export class SOAPDataSource<TContext = any> extends DataSource {
         }
       }
     } catch (error) {
-      throw new ApolloError((error as Error).message);
+      throw new GraphQLError((error as Error).message);
     }
     return this.client;
   }
@@ -141,7 +132,7 @@ export class SOAPDataSource<TContext = any> extends DataSource {
         response = result[0];
       }
     } catch (error) {
-      throw new ApolloError((error as Error).message);
+      throw new GraphQLError((error as Error).message);
     }
     return response;
   }

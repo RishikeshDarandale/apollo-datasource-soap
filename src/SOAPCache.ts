@@ -1,6 +1,6 @@
 'use strict';
 
-import { InMemoryLRUCache, KeyValueCache } from 'apollo-server-caching';
+import { InMemoryLRUCache, KeyValueCache } from '@apollo/utils.keyvaluecache';
 
 /**
  * SOAP Cache utility
@@ -22,11 +22,10 @@ export class SOAPCache {
    *
    * @param {Object} keyValueCache a cache object from apollo server en
    */
-  constructor(keyValueCache: KeyValueCache) {
+  constructor(
+    keyValueCache: KeyValueCache = new InMemoryLRUCache<string, any>(),
+  ) {
     this.keyValueCache = keyValueCache;
-    if (!this.keyValueCache) {
-      this.keyValueCache = new InMemoryLRUCache<string>();
-    }
   }
 
   /**

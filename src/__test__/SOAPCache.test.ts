@@ -1,5 +1,4 @@
-import { InMemoryLRUCache } from 'apollo-server-caching';
-
+import { InMemoryLRUCache } from '@apollo/utils.keyvaluecache';
 import { SOAPCache } from '../SOAPCache';
 
 const cache: SOAPCache = new SOAPCache(new InMemoryLRUCache<string>());
