@@ -1,6 +1,6 @@
 # apollo-datasource-soap
 
-[![CircleCI](https://circleci.com/gh/RishikeshDarandale/apollo-datasource-soap.svg?style=svg)](https://circleci.com/gh/RishikeshDarandale/apollo-datasource-soap)
+![Github Action](https://github.com/RishikeshDarandale/apollo-datasource-soap/actions/workflows/master.yml/badge.svg)
 ![CodeQL Analysis](https://github.com/RishikeshDarandale/apollo-datasource-soap/actions/workflows/codeql-analysis.yml/badge.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/RishikeshDarandale/apollo-datasource-soap/badge.svg)](https://snyk.io/test/github/RishikeshDarandale/apollo-datasource-soap)
 [![npm](https://img.shields.io/npm/v/apollo-datasource-soap.svg)](https://www.npmjs.com/package/apollo-datasource-soap)
