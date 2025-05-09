@@ -1,0 +1,29 @@
+# This flow gets trigger when a tag is created with pattern vX.Y.Z
+# This will publish the package to npm
+name: Publish
+
+# Only push on tags with pattern `vX.Y.Z`
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  publish:
+    # run only on upstream repository
+    if: github.repository == 'rishikeshdarandale/apollo-datasource-soap'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout the code'
+        uses: actions/checkout@v4
+      - name: 'Setup node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 'Install the dependencies'
+        run: npm ci
+      - name: 'Authenticate with registry'
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      - name: 'Publish the package'
+        run: npm run deploy

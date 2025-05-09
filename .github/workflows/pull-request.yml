@@ -1,0 +1,27 @@
+# This is a workflow that verifies pull requests.
+name: Pull Request
+
+# Only pull requests on `main` and long running feature branch
+# By default, a workflow only runs when a pull_request event's activity type is opened, synchronize, or reopened
+# @read: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+on:
+  pull_request:
+    branches:
+      - master
+      - 'feature/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout the code'
+        uses: actions/checkout@v4
+      - name: 'Setup node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 'Install the dependencies'
+        run: npm ci
+      - name: 'Run the test'
+        run: npm test -- --ci --maxWorkers=2 --silent --verbose

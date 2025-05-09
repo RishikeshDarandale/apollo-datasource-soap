@@ -1,0 +1,32 @@
+# This workflow triggers when a change is merged into the master branch.
+name: Master
+
+# Only push on `main`
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build-the-master:
+    # run only on upstream repository
+    if: github.repository == 'rishikeshdarandale/apollo-datasource-soap'
+    runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: 'Checkout the code'
+        uses: actions/checkout@v4
+      - name: 'Setup node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 'Install the dependencies'
+        run: npm ci
+      - name: 'Run the test'
+        run: npm test -- --ci --maxWorkers=2 --silent --verbose
+      - name: 'Build the package'
+        run: npm run build
