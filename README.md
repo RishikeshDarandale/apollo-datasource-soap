@@ -16,6 +16,7 @@ Connect the SOAP based services to your Apollo server using [Data Sources][1]
 - 1.x => apollo server 2.x
 - 2.x => apollo server 3.x
 - 3.x => apollo server 4.x
+- 4.x => apollo server 5.x
 
 # Soap Data Source
 
